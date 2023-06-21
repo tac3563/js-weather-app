@@ -1,5 +1,38 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+body {
+  font-family: "SF Pro Display", Arial, sans-serif;
+}
+
+@font-face {
+  font-family: "SF Pro Display";
+  src: url("../fonts/sf-pro-display-fonts/SFPRODISPLAYBLACKITALIC.OTF")
+    format("opentype");
+}
+@font-face {
+  font-family: "SF Pro Display";
+  src: url("../fonts/sf-pro-display-fonts/SFPRODISPLAYBOLD.OTF")
+    format("opentype");
+}
+
+@font-face {
+  font-family: "SF Pro Display";
+  src: url("../fonts/sf-pro-display-fonts/SFPRODISPLAYHEAVYITALIC.OTF")
+    format("opentype");
+}
+
+@font-face {
+  font-family: "SF Pro Display";
+  src: url("../fonts/sf-pro-display-fonts/SFPRODISPLAYLIGHTITALIC.OTF")
+    format("opentype");
+}
+
+@font-face {
+  font-family: "SF Pro Display";
+  src: url("../fonts/sf-pro-display-fonts/SFPRODISPLAYMEDIUM.OTF")
+    format("opentype");
+}
+
+@font-face {
+  font-family: "SF Pro Display";
+  src: url("../fonts/sf-pro-display-fonts/SFPRODISPLAYREGULAR.OTF")
+    format("opentype");
 }

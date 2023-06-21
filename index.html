@@ -9,7 +9,20 @@
   <body>
     <div class="app-container">
       <header id="header">
-        <nav id="nav-menu"></nav>
+        <div class="location-menu">
+          <img src="/src/img/location-icon.svg" alt="location icon" />
+          <select
+            id="location-dropdown"
+            aria-label="dropdown to select the location to see weather forecast"
+          >
+            <option value="option1">Leicester</option>
+            <option value="option2">Option 2</option>
+            <option value="option3">Option 3</option>
+          </select>
+        </div>
+        <div class="notifications">
+          <img src="/src/img/notification.svg" alt="notification icon" />
+        </div>
       </header>
       <main id="main">
         <div class="main-header-container">
@@ -19,9 +32,10 @@
             src="/src/img/sun-cloud-angled-rain.svg"
             alt="sun behind a cloud with rain falling"
           />
+          <div class="temperature-container"></div>
         </div>
 
-        <div class="temperature-container"></div>
+        <div class="daily-forecast-summary-container"></div>
 
         <div class="daily-forecast-container"></div>
 

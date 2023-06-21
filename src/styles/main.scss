@@ -1,5 +1,7 @@
-@import "base/_variables.scss";
 @import "base/_typography.scss";
+@import "utilities/_functions.scss";
+@import "utilities/_mixins.scss";
+@import "base/_variables.scss";
 
 @import "components/_buttons.scss";
 @import "components/_forms.scss";
@@ -8,6 +10,3 @@
 @import "layout/_header.scss";
 
 @import "pages/_home.scss";
-
-@import "utilities/_functions.scss";
-@import "utilities/_mixins.scss";

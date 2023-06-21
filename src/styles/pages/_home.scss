@@ -1,10 +1,9 @@
 body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @include flexCentre;
   min-height: 100vh;
 
   .app-container {
+    padding: 2.5em;
     max-width: 900px;
     width: 100%;
     height: 100vh;
@@ -28,10 +27,7 @@ body {
         }
 
         .header-img {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          margin: auto;
+          @include flexCentre;
           width: 100%;
           height: auto;
         }
