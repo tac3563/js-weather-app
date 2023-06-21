@@ -1,0 +1,41 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+
+  .app-container {
+    max-width: 900px;
+    width: 100%;
+    height: 100vh;
+    background-image: linear-gradient(to right, #08244f, #134cb5, #0b42ab);
+    margin: auto;
+
+    @media (min-width: 1199px) {
+      height: 90vh;
+      border-radius: 40px;
+    }
+
+    #main {
+      width: 100%;
+
+      .main-header-container {
+        width: 100%;
+        margin: auto;
+
+        @media (min-width: 599px) {
+          width: 60%;
+        }
+
+        .header-img {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin: auto;
+          width: 100%;
+          height: auto;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JS Weather App</title>
+    <link rel="stylesheet" href="dist/style.css" />
+  </head>
+  <body>
+    <div class="app-container">
+      <header id="header">
+        <nav id="nav-menu"></nav>
+      </header>
+      <main id="main">
+        <div class="main-header-container">
+          <img
+            class="header-img"
+            id="rain-header-img"
+            src="/src/img/sun-cloud-angled-rain.svg"
+            alt="sun behind a cloud with rain falling"
+          />
+        </div>
+
+        <div class="temperature-container"></div>
+
+        <div class="daily-forecast-container"></div>
+
+        <div class="weekly-forecast-container"></div>
+      </main>
+
+      <footer id="footer"></footer>
+    </div>
+    <script src="src/index.js"></script>
+  </body>
+</html>

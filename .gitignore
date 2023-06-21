@@ -1,0 +1,21 @@
+# Node.js dependencies
+/node_modules/
+
+# Build output
+/dist/
+
+# Environment variables
+.env
+
+# IDE or editor specific files
+.vscode/
+.idea/
+
+
+# Logs and debugging
+*.log
+debug.log
+
+# Package-lock.json file
+package-lock.json
+
