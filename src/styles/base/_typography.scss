@@ -1,6 +1,10 @@
 body {
   font-family: "SF Pro Display", Arial, sans-serif;
   color: white;
+
+  p {
+    @include fontPxToRem(18);
+  }
 }
 
 @font-face {

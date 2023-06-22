@@ -1,6 +1,10 @@
 # Node.js dependencies
 /node_modules/
 
+# Fonts
+/fonts/*.woff
+/fonts/*.woff2
+
 # Build output
 /dist/
 
@@ -10,11 +14,6 @@
 # IDE or editor specific files
 .vscode/
 .idea/
-
-
-# Logs and debugging
-*.log
-debug.log
 
 # Package-lock.json file
 package-lock.json
