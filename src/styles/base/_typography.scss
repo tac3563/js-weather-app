@@ -4,35 +4,34 @@ body {
 
 @font-face {
   font-family: "SF Pro Display";
-  src: url("../fonts/sf-pro-display-fonts/SFPRODISPLAYBLACKITALIC.OTF")
-    format("opentype");
+  src: url("../fonts/sf-pro-display-fonts/SFPRODISPLAYBLACKITALIC.woff")
+    format("woff");
 }
 @font-face {
   font-family: "SF Pro Display";
-  src: url("../fonts/sf-pro-display-fonts/SFPRODISPLAYBOLD.OTF")
-    format("opentype");
-}
-
-@font-face {
-  font-family: "SF Pro Display";
-  src: url("../fonts/sf-pro-display-fonts/SFPRODISPLAYHEAVYITALIC.OTF")
-    format("opentype");
+  src: url("../fonts/sf-pro-display-fonts/SFPRODISPLAYBOLD.woff") format("woff");
 }
 
 @font-face {
   font-family: "SF Pro Display";
-  src: url("../fonts/sf-pro-display-fonts/SFPRODISPLAYLIGHTITALIC.OTF")
-    format("opentype");
+  src: url("../fonts/sf-pro-display-fonts/SFPRODISPLAYHEAVYITALIC.woff")
+    format("woff");
 }
 
 @font-face {
   font-family: "SF Pro Display";
-  src: url("../fonts/sf-pro-display-fonts/SFPRODISPLAYMEDIUM.OTF")
-    format("opentype");
+  src: url("../fonts/sf-pro-display-fonts/SFPRODISPLAYLIGHTITALIC.woff")
+    format("woff");
 }
 
 @font-face {
   font-family: "SF Pro Display";
-  src: url("../fonts/sf-pro-display-fonts/SFPRODISPLAYREGULAR.OTF")
-    format("opentype");
+  src: url("../fonts/sf-pro-display-fonts/SFPRODISPLAYMEDIUM.woff")
+    format("woff");
+}
+
+@font-face {
+  font-family: "SF Pro Display";
+  src: url("../fonts/sf-pro-display-fonts/SFPRODISPLAYREGULAR.woff")
+    format("woff");
 }
