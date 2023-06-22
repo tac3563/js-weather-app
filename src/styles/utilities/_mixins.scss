@@ -4,3 +4,7 @@
   align-items: center;
   margin: auto;
 }
+
+@mixin fontPxToRem($value) {
+  font-size: calc($value / 16) + rem;
+}
