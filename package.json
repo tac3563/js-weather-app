@@ -2,16 +2,25 @@
   "name": "js-weather-app",
   "version": "1.0.0",
   "description": "js-weather-app",
+  "repository": {
+    "url": "git+https://github.com/tac3563/js-weather-app.git"
+  },
   "main": "index.js",
   "scripts": {
     "build": "webpack",
-    "watch": "webpack --watch"
+    "watch": "webpack --watch",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.22.5",
+    "@babel/preset-env": "^7.22.5",
+    "babel-loader": "^9.1.2",
     "css-loader": "^6.8.1",
+    "gh-pages": "^5.0.0",
     "sass": "^1.63.4",
     "sass-loader": "^13.3.2",
     "style-loader": "^3.3.3",
