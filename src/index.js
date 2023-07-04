@@ -53,7 +53,13 @@ async function getWeeklyForecast(location) {
       forecastItem.classList.add("forecast-item");
 
       const forecastDateElement = document.createElement("div");
-      forecastDateElement.textContent = forecast.date;
+      const forecastDate = new Date(forecast.date);
+
+      const dayOfWeek = forecastDate.toLocaleString("en-GB", {
+        weekday: "long",
+      });
+      console.log(dayOfWeek);
+      forecastDateElement.textContent = dayOfWeek;
       forecastDateElement.classList.add("forecast-date");
 
       const forecastTempElement = document.createElement("div");

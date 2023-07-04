@@ -1,0 +1,9 @@
+#weekly-forecast-container {
+  display: flex;
+  flex-direction: column;
+
+  .forecast-item {
+    display: flex;
+    justify-content: space-between;
+  }
+}
