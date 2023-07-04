@@ -18,59 +18,54 @@ const baseUrl = "http://api.weatherapi.com/v1";
 const currentTempElement = document.getElementById("current-temp");
 const forecastElement = document.getElementById("weekly-forecast-container");
 
+async function fetchData(url) {
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error("Network error");
+  }
+  return response.json();
+}
+
 async function getCurrentTemp(location) {
   try {
-    const response = await fetch(
-      `${baseUrl}/current.json?key=${weatherApiKey}&q=${location}`
-    );
-    if (!response.ok) {
-      throw new Error("Network error");
-    }
-    const data = await response.json();
+    const url = `${baseUrl}/current.json?key=${weatherApiKey}&q=${location}`;
+    const data = await fetchData(url);
     const currentTemp = data.current.temp_c;
     currentTempElement.textContent = `${currentTemp}`;
   } catch (error) {
-    console.log(`ERROR!!!`, error);
+    console.log("Error:", error);
   }
 }
 
 async function getWeeklyForecast(location) {
   try {
-    const response = await fetch(
-      `${baseUrl}/forecast.json?key=${weatherApiKey}&q=${location}&days=7`
-    );
-    if (!response.ok) {
-      throw new Error("network error");
-    }
-    const data = await response.json();
+    const url = `${baseUrl}/forecast.json?key=${weatherApiKey}&q=${location}&days=7`;
+    const data = await fetchData(url);
     const weeklyForecast = data.forecast.forecastday;
 
     forecastElement.innterHTML = "";
 
-    for (let key in weeklyForecast) {
-      if (weeklyForecast.hasOwnProperty(key)) {
-        const forecast = weeklyForecast[key];
-        const dayMinTemp = forecast.day.mintemp_c;
-        const dayMaxTemp = forecast.day.maxtemp_c;
+    weeklyForecast.forEach((forecast) => {
+      const dayMinTemp = forecast.day.mintemp_c;
+      const dayMaxTemp = forecast.day.maxtemp_c;
 
-        const forecastItem = document.createElement("div");
-        forecastItem.classList.add("forecast-item");
-        forecastElement.appendChild(forecastItem);
+      const forecastItem = document.createElement("div");
+      forecastItem.classList.add("forecast-item");
 
-        const forecastDateElement = document.createElement("div");
-        forecastDateElement.textContent = weeklyForecast[key].date;
-        forecastDateElement.classList.add("forecast-date");
+      const forecastDateElement = document.createElement("div");
+      forecastDateElement.textContent = forecast.date;
+      forecastDateElement.classList.add("forecast-date");
 
-        const forecastTempElement = document.createElement("div");
-        forecastTempElement.textContent = `${dayMaxTemp}, ${dayMinTemp}`;
-        forecastTempElement.classList.add("forecast-temp");
+      const forecastTempElement = document.createElement("div");
+      forecastTempElement.textContent = `${dayMaxTemp}, ${dayMinTemp}`;
+      forecastTempElement.classList.add("forecast-temp");
 
-        forecastItem.appendChild(forecastDateElement);
-        forecastItem.appendChild(forecastTempElement);
-      }
-    }
+      forecastElement.appendChild(forecastItem);
+      forecastItem.appendChild(forecastDateElement);
+      forecastItem.appendChild(forecastTempElement);
+    });
   } catch (error) {
-    console.log("Error", error);
+    console.log("Error:", error);
   }
 }
 
