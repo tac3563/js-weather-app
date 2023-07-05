@@ -16,6 +16,8 @@ import "./styles/main.scss";
 const weatherApiKey = "ecc04dd12dfc427a81f192018230307";
 const baseUrl = "http://api.weatherapi.com/v1";
 const currentTempElement = document.getElementById("current-temp");
+const currentMinTempElement = document.getElementById("current-min-temp");
+const currentMaxTempElement = document.getElementById("current-max-temp");
 const forecastElement = document.getElementById("weekly-forecast-container");
 
 async function fetchData(url) {
@@ -31,7 +33,22 @@ async function getCurrentTemp(location) {
     const url = `${baseUrl}/current.json?key=${weatherApiKey}&q=${location}`;
     const data = await fetchData(url);
     const currentTemp = data.current.temp_c;
-    currentTempElement.textContent = `${currentTemp}`;
+    currentTempElement.textContent = `${currentTemp}\u00B0`;
+  } catch (error) {
+    console.log("Error:", error);
+  }
+}
+
+async function getCurrentMinMaxTemp(location) {
+  try {
+    const url = `${baseUrl}/forecast.json?key=${weatherApiKey}&q=${location}`;
+    const data = await fetchData(url);
+    const foreCastDay = data.forecast.forecastday;
+    const currentMinTemp = Math.round(foreCastDay[0].day.mintemp_c);
+    const currentMaxTemp = Math.round(foreCastDay[0].day.maxtemp_c);
+
+    currentMinTempElement.textContent = `Min: ${currentMinTemp}\u00B0`;
+    currentMaxTempElement.textContent = `Max: ${currentMaxTemp}\u00B0`;
   } catch (error) {
     console.log("Error:", error);
   }
@@ -46,8 +63,8 @@ async function getWeeklyForecast(location) {
     forecastElement.innterHTML = "";
 
     weeklyForecast.forEach((forecast) => {
-      const dayMinTemp = forecast.day.mintemp_c;
-      const dayMaxTemp = forecast.day.maxtemp_c;
+      const dayMinTemp = Math.round(forecast.day.mintemp_c);
+      const dayMaxTemp = Math.round(forecast.day.maxtemp_c);
 
       const forecastItem = document.createElement("div");
       forecastItem.classList.add("forecast-item");
@@ -58,12 +75,11 @@ async function getWeeklyForecast(location) {
       const dayOfWeek = forecastDate.toLocaleString("en-GB", {
         weekday: "long",
       });
-      console.log(dayOfWeek);
       forecastDateElement.textContent = dayOfWeek;
       forecastDateElement.classList.add("forecast-date");
 
       const forecastTempElement = document.createElement("div");
-      forecastTempElement.textContent = `${dayMaxTemp}, ${dayMinTemp}`;
+      forecastTempElement.textContent = `${dayMaxTemp}\u00B0 ${dayMinTemp}\u00B0`;
       forecastTempElement.classList.add("forecast-temp");
 
       forecastElement.appendChild(forecastItem);
@@ -77,3 +93,4 @@ async function getWeeklyForecast(location) {
 
 getWeeklyForecast("Leicester");
 getCurrentTemp("Leicester");
+getCurrentMinMaxTemp("Leicester");

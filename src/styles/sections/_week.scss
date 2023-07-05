@@ -1,9 +1,23 @@
 #weekly-forecast-container {
   display: flex;
   flex-direction: column;
+  margin-top: 1em;
+  padding: 1em;
+  background-color: rgba(0, 16, 38, 0.3);
+  border-radius: 20px;
+
+  h3 {
+    margin-top: 0;
+  }
 
   .forecast-item {
     display: flex;
     justify-content: space-between;
+
+    .forecast-date,
+    .forecast-temp {
+      font-size: 18px;
+      margin: 0.5em 0;
+    }
   }
 }
