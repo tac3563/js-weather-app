@@ -6,18 +6,51 @@
   background-color: rgba(0, 16, 38, 0.3);
   border-radius: 20px;
 
-  h3 {
-    margin-top: 0;
+  .weekly-forcast-header {
+    display: flex;
+    justify-content: space-between;
+
+    h3 {
+      margin-top: 0;
+    }
+
+    img {
+      width: 24px;
+      height: 24px;
+    }
   }
 
   .forecast-item {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    margin: 0.75em 0;
+
+    .forecast-date {
+      width: 33.33%;
+    }
+
+    .forecast-icon-container {
+      width: 33.33%;
+      display: flex;
+      align-items: center;
+      justify-content: end;
+
+      .forecast-icon {
+        width: 100%;
+        height: auto;
+        max-width: 50px;
+      }
+    }
+
+    .forecast-temp {
+      width: 33.33%;
+      text-align: end;
+    }
 
     .forecast-date,
     .forecast-temp {
       font-size: 18px;
-      margin: 0.5em 0;
     }
   }
 }

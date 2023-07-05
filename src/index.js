@@ -15,6 +15,7 @@ import "./styles/main.scss";
 
 const weatherApiKey = "ecc04dd12dfc427a81f192018230307";
 const baseUrl = "http://api.weatherapi.com/v1";
+const currentWeatherIconElement = document.getElementById("header-img");
 const currentTempElement = document.getElementById("current-temp");
 const currentMinTempElement = document.getElementById("current-min-temp");
 const currentMaxTempElement = document.getElementById("current-max-temp");
@@ -33,6 +34,8 @@ async function getCurrentTemp(location) {
     const url = `${baseUrl}/current.json?key=${weatherApiKey}&q=${location}`;
     const data = await fetchData(url);
     const currentTemp = data.current.temp_c;
+    const currentWeather = data.current.condition.icon;
+    currentWeatherIconElement.src = `${currentWeather}`;
     currentTempElement.textContent = `${currentTemp}\u00B0`;
   } catch (error) {
     console.log("Error:", error);
@@ -71,12 +74,19 @@ async function getWeeklyForecast(location) {
 
       const forecastDateElement = document.createElement("div");
       const forecastDate = new Date(forecast.date);
-
       const dayOfWeek = forecastDate.toLocaleString("en-GB", {
         weekday: "long",
       });
       forecastDateElement.textContent = dayOfWeek;
       forecastDateElement.classList.add("forecast-date");
+
+      const forecastIconContainerElement = document.createElement("div");
+      forecastIconContainerElement.classList.add("forecast-icon-container");
+
+      const forecastIconElement = document.createElement("img");
+      const forecastIcon = forecast.day.condition.icon;
+      forecastIconElement.src = `${forecastIcon}`;
+      forecastIconElement.classList.add("forecast-icon");
 
       const forecastTempElement = document.createElement("div");
       forecastTempElement.textContent = `${dayMaxTemp}\u00B0 ${dayMinTemp}\u00B0`;
@@ -84,6 +94,8 @@ async function getWeeklyForecast(location) {
 
       forecastElement.appendChild(forecastItem);
       forecastItem.appendChild(forecastDateElement);
+      forecastItem.appendChild(forecastIconContainerElement);
+      forecastIconContainerElement.appendChild(forecastIconElement);
       forecastItem.appendChild(forecastTempElement);
     });
   } catch (error) {
