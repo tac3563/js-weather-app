@@ -23,7 +23,9 @@ const forecastElement = document.getElementById("weekly-forecast-container");
 const currentPrecipElement = document.getElementById("current-precip");
 const currentHumidityElement = document.getElementById("current-humidity");
 const currentWindElement = document.getElementById("current-wind");
-const dailyForecastContainerElement = document.querySelector(".daily-forecast");
+const hourlyForecastContainerElement = document.querySelector(
+  ".hourly-forecast-container"
+);
 const currentDayElement = document.querySelector(".today-date");
 
 async function fetchData(url) {
@@ -88,10 +90,29 @@ async function getDailyForecast(location) {
     console.log(forecastHour);
 
     forecastHour.forEach(function (hour) {
+      const hourlyForecastElement = document.createElement("div");
+      hourlyForecastElement.classList.add("hourly-forecast");
+
       const hourlyTemp = Math.round(hour.temp_c);
-      const dailyTempForecastElement = document.createElement("div");
-      dailyTempForecastElement.textContent = `${hourlyTemp}\u00B0C`;
-      dailyForecastContainerElement.appendChild(dailyTempForecastElement);
+      const hourlyTempForecastElement = document.createElement("p");
+      hourlyTempForecastElement.classList.add("hourly-forecast-temp");
+      hourlyTempForecastElement.textContent = `${hourlyTemp}\u00B0C`;
+
+      const hourlyWeatherIcon = hour.condition.icon;
+      const hourlyWeatherIconElement = document.createElement("img");
+      hourlyWeatherIconElement.src = `${hourlyWeatherIcon}`;
+      hourlyWeatherIconElement.classList.add("hourly-forecast-icon");
+
+      const hourlyTime = hour.time;
+      const hourlyTimeFormatted = hourlyTime.slice(11, 16);
+      const hourlyTimeElement = document.createElement("p");
+      hourlyTimeElement.textContent = `${hourlyTimeFormatted}`;
+      hourlyTimeElement.classList.add("hourly-forecast-hour");
+
+      hourlyForecastContainerElement.appendChild(hourlyForecastElement);
+      hourlyForecastElement.appendChild(hourlyTempForecastElement);
+      hourlyForecastElement.appendChild(hourlyWeatherIconElement);
+      hourlyForecastElement.appendChild(hourlyTimeElement);
     });
   } catch (error) {}
 }

@@ -1,0 +1,13 @@
+.hourly-forecast-container {
+  display: flex;
+  overflow: scroll;
+  gap: 12px;
+
+  .hourly-forecast {
+    flex: 0 0 calc(25% - 12px);
+
+    &:first-child {
+      margin-left: 1em;
+    }
+  }
+}
