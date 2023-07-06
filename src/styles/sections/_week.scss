@@ -32,9 +32,7 @@
 
     .forecast-icon-container {
       width: 33.33%;
-      display: flex;
-      align-items: center;
-      justify-content: end;
+      @include flexCentre;
 
       .forecast-icon {
         width: 100%;

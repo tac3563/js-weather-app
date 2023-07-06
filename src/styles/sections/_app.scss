@@ -26,13 +26,14 @@ body {
 
   .app-container {
     padding: 2.5em;
-    max-width: 900px;
+    min-height: 100vh;
+    max-width: 499px;
     width: 100%;
     background-image: linear-gradient(to right, #08244f, #134cb5, #0b42ab);
-    margin: 0 auto;
+    margin: auto;
 
-    @media (min-width: 1199px) {
-      height: 90vh;
+    @media (min-width: 579px) {
+      min-height: 90vh;
       border-radius: 40px;
     }
 

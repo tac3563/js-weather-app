@@ -1,6 +1,6 @@
-# Weather Web App
+# JS Weather App
 
-A simple weather web app that retrieves and displays weather information using the WeatherAPI.
+A simple weather web app that retrieves and displays weather information using the WeatherAPI. The main purpose of this app was to help me grow my JS skills by working with modern asynchronous programming techniques such as async/await and retrieving and utilising data using the Fetch API.
 
 ## Features
 
@@ -28,7 +28,7 @@ Follow the instructions below to get a local copy of the project up and running 
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/weather-web-app.git
+   git clone https://github.com/tac3563/js-weather-app.git
    ```
 
 2. Navigate to project directory:
@@ -43,6 +43,12 @@ Follow the instructions below to get a local copy of the project up and running 
     npm install
    ```
 
+4. Watch for changes:
+
+   ```bash
+      npm run watch
+   ```
+
 ### Usage
 
 - Obtain an API key from the WeatherAPI website.
@@ -55,7 +61,7 @@ Follow the instructions below to get a local copy of the project up and running 
 
 ### API Reference
 
-- This project uses the WeatherAPI to retrieve weather data. Visit the WeatherAPI documentation for more information on available endpoints and parameters.
+- This project uses the WeatherAPI to retrieve weather data. Visit the WeatherAPI documentation for more information on available endpoints and parameters: https://www.weatherapi.com/docs/
 
 ### Contributing
 

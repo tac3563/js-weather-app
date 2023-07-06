@@ -20,10 +20,11 @@ const currentTempElement = document.getElementById("current-temp");
 const currentMinTempElement = document.getElementById("current-min-temp");
 const currentMaxTempElement = document.getElementById("current-max-temp");
 const forecastElement = document.getElementById("weekly-forecast-container");
-const currentPrecipElement = document.getElementById('current-precip');
-const currentHumidityElement = document.getElementById('current-humidity')
-const currentWindElement = document.getElementById('current-wind')
-
+const currentPrecipElement = document.getElementById("current-precip");
+const currentHumidityElement = document.getElementById("current-humidity");
+const currentWindElement = document.getElementById("current-wind");
+const dailyForecastContainerElement = document.querySelector(".daily-forecast");
+const currentDayElement = document.querySelector(".today-date");
 
 async function fetchData(url) {
   const response = await fetch(url);
@@ -42,16 +43,13 @@ async function getCurrentTemp(location) {
     currentWeatherIconElement.src = `${currentWeather}`;
     currentTempElement.textContent = `${currentTemp}\u00B0`;
 
-    
-
     const currentHumidity = data.current.humidity;
     const currentWindSpeed = Math.round(data.current.gust_kph);
     const currentPreciptiation = data.current.precip_mm;
-    
-    currentPrecipElement.textContent = `${currentPreciptiation}%`;
+
+    currentPrecipElement.textContent = `${currentPreciptiation}mm`;
     currentHumidityElement.textContent = `${currentHumidity}%`;
     currentWindElement.textContent = `${currentWindSpeed}/kph`;
-
   } catch (error) {
     console.log("Error:", error);
   }
@@ -61,7 +59,14 @@ async function getCurrentMinMaxTemp(location) {
   try {
     const url = `${baseUrl}/forecast.json?key=${weatherApiKey}&q=${location}`;
     const data = await fetchData(url);
+    const options = { day: "numeric", month: "long" };
     const foreCastDay = data.forecast.forecastday;
+    const currentDate = foreCastDay[0].date;
+    const currentDay = new Date(currentDate);
+    const currentDayFormatted = currentDay.toLocaleDateString("en-US", options);
+
+    currentDayElement.textContent = `${currentDayFormatted}`;
+
     const currentMinTemp = Math.round(foreCastDay[0].day.mintemp_c);
     const currentMaxTemp = Math.round(foreCastDay[0].day.maxtemp_c);
 
@@ -72,12 +77,30 @@ async function getCurrentMinMaxTemp(location) {
   }
 }
 
+async function getDailyForecast(location) {
+  try {
+    const url = `${baseUrl}/forecast.json?key=${weatherApiKey}&q=${location}`;
+    const data = await fetchData(url);
+
+    const dailyForecast = data.forecast.forecastday;
+    const forecastHour = dailyForecast[0].hour;
+
+    console.log(forecastHour);
+
+    forecastHour.forEach(function (hour) {
+      const hourlyTemp = Math.round(hour.temp_c);
+      const dailyTempForecastElement = document.createElement("div");
+      dailyTempForecastElement.textContent = `${hourlyTemp}\u00B0C`;
+      dailyForecastContainerElement.appendChild(dailyTempForecastElement);
+    });
+  } catch (error) {}
+}
+
 async function getWeeklyForecast(location) {
   try {
     const url = `${baseUrl}/forecast.json?key=${weatherApiKey}&q=${location}&days=7`;
     const data = await fetchData(url);
     const weeklyForecast = data.forecast.forecastday;
-
     forecastElement.innterHTML = "";
 
     weeklyForecast.forEach((forecast) => {
@@ -92,6 +115,7 @@ async function getWeeklyForecast(location) {
       const dayOfWeek = forecastDate.toLocaleString("en-GB", {
         weekday: "long",
       });
+
       forecastDateElement.textContent = dayOfWeek;
       forecastDateElement.classList.add("forecast-date");
 
@@ -117,7 +141,7 @@ async function getWeeklyForecast(location) {
     console.log("Error:", error);
   }
 }
-
+getDailyForecast("Leicester");
 getWeeklyForecast("Leicester");
 getCurrentTemp("Leicester");
 getCurrentMinMaxTemp("Leicester");
