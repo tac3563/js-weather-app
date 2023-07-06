@@ -20,6 +20,10 @@ const currentTempElement = document.getElementById("current-temp");
 const currentMinTempElement = document.getElementById("current-min-temp");
 const currentMaxTempElement = document.getElementById("current-max-temp");
 const forecastElement = document.getElementById("weekly-forecast-container");
+const currentPrecipElement = document.getElementById('current-precip');
+const currentHumidityElement = document.getElementById('current-humidity')
+const currentWindElement = document.getElementById('current-wind')
+
 
 async function fetchData(url) {
   const response = await fetch(url);
@@ -37,6 +41,17 @@ async function getCurrentTemp(location) {
     const currentWeather = data.current.condition.icon;
     currentWeatherIconElement.src = `${currentWeather}`;
     currentTempElement.textContent = `${currentTemp}\u00B0`;
+
+    
+
+    const currentHumidity = data.current.humidity;
+    const currentWindSpeed = Math.round(data.current.gust_kph);
+    const currentPreciptiation = data.current.precip_mm;
+    
+    currentPrecipElement.textContent = `${currentPreciptiation}%`;
+    currentHumidityElement.textContent = `${currentHumidity}%`;
+    currentWindElement.textContent = `${currentWindSpeed}/kph`;
+
   } catch (error) {
     console.log("Error:", error);
   }
