@@ -2,39 +2,20 @@ body {
   @include flexCentre;
   min-height: 100vh;
 
-  #header {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    font-size: 1.2rem;
-    font-family: "SF Pro Display", Arial, sans-serif;
-
-    .location-menu {
-      display: flex;
-      gap: 0.25em;
-
-      #location-dropdown {
-        color: white;
-        background: transparent;
-        border: none;
-        font-size: 1.2rem;
-        line-height: 1.5;
-        font-family: "SF Pro Display", Arial, sans-serif;
-      }
-    }
-  }
-
   .app-container {
-    padding: 2.5em;
+    padding: 1.25em;
     min-height: 100vh;
     max-width: 499px;
     width: 100%;
     background-image: linear-gradient(to right, #08244f, #134cb5, #0b42ab);
     margin: auto;
+    overflow: hidden;
 
     @media (min-width: 579px) {
-      min-height: 90vh;
+      min-height: unset;
       border-radius: 40px;
+      padding: 2.5em;
+      margin: 1em auto;
     }
 
     #main {
@@ -103,7 +84,7 @@ body {
           p {
             margin: 0;
             color: white;
-            @include fontPxToRem(14);
+            @include fontPxToRem(16);
           }
         }
       }

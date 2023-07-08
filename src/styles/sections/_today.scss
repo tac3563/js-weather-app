@@ -2,12 +2,11 @@
   display: flex;
   overflow: scroll;
   gap: 12px;
+  margin: 0 0.5em;
 
   .hourly-forecast {
     flex: 0 0 calc(25% - 12px);
-
-    &:first-child {
-      margin-left: 1em;
-    }
+    @include flexCentre;
+    flex-direction: column;
   }
 }
