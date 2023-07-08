@@ -1,32 +1,31 @@
 import "./styles/main.scss";
 
-/*  1. Authenticate API with the API Key 
-    2. Data to be fetched by the API:
-        2a. Todays Temperature 
-        2b. Todays min/max temp
-        2c. Todays chance of rain, humidity, wind
-        2d. Todays 24 hour forecast in a side scroll
-        2e. Weekly forecast and convert dates into days of the week
-    3. Fetch relevant data and handle any errors
-    4. Add event listeners to fetch the data when triggered (location selected from dropdown)
-    5. Add logic to change the icons depending on the data retrieved
-    6. Set up Jest and create mock tests for the api retrieval and event handlers
-*/
-
-const weatherApiKey = "ecc04dd12dfc427a81f192018230307";
 const baseUrl = "http://api.weatherapi.com/v1";
-const currentWeatherIconElement = document.getElementById("header-img");
-const currentTempElement = document.getElementById("current-temp");
-const currentMinTempElement = document.getElementById("current-min-temp");
-const currentMaxTempElement = document.getElementById("current-max-temp");
-const forecastElement = document.getElementById("weekly-forecast-container");
-const currentPrecipElement = document.getElementById("current-precip");
-const currentHumidityElement = document.getElementById("current-humidity");
-const currentWindElement = document.getElementById("current-wind");
-const hourlyForecastContainerElement = document.querySelector(
+const weatherApiKey = "ecc04dd12dfc427a81f192018230307";
+const currentWeatherIconEl = document.getElementById("header-img");
+const currentTempEl = document.getElementById("current-temp");
+const currentMinTempEl = document.getElementById("current-min-temp");
+const currentMaxTempEl = document.getElementById("current-max-temp");
+const forecastEl = document.getElementById("weekly-forecast-container");
+const currentPrecipEl = document.getElementById("current-precip");
+const currentHumidityEl = document.getElementById("current-humidity");
+const currentWindEl = document.getElementById("current-wind");
+const hourlyForecastContainerEl = document.querySelector(
   ".hourly-forecast-container"
 );
-const currentDayElement = document.querySelector(".today-date");
+const currentDayEl = document.querySelector(".today-date");
+
+/*
+Code Refactoring:
+  1. Rename getCurrentTemp to getCurrentWeather as it better describes the purpose of the function rather than just getting the temperature
+  2. Use object destructuring to take relevant properties from the fetched data and assign them to a single object rather than multiple variables 
+  3. Change all Math.round() and other methods which manipulate the data to only apply when editing the DOM in order to preserve the original data from the API for future use.
+  4. Break the functions down into smaller getters/setters so that each function is only repsonsible for one action. 
+    a. Two getters for the current and forecast data 
+    b. Three setters for storing and manipulating the fetched data
+    c. A function for each newly created element in the DOM.
+  5. Add the setter functions as callbacks to be executed when the gettters have been run.
+*/
 
 async function fetchData(url) {
   const response = await fetch(url);
@@ -36,133 +35,146 @@ async function fetchData(url) {
   return response.json();
 }
 
-async function getCurrentTemp(location) {
+async function getCurrentWeather(location) {
   try {
     const url = `${baseUrl}/current.json?key=${weatherApiKey}&q=${location}`;
     const data = await fetchData(url);
-    const currentTemp = data.current.temp_c;
-    const currentWeather = data.current.condition.icon;
-    currentWeatherIconElement.src = `${currentWeather}`;
-    currentTempElement.textContent = `${currentTemp}\u00B0`;
+    const currentWeather = data.current;
+    const { temp_c, condition, humidity, gust_kph, precip_mm } = currentWeather;
 
-    const currentHumidity = data.current.humidity;
-    const currentWindSpeed = Math.round(data.current.gust_kph);
-    const currentPreciptiation = data.current.precip_mm;
-
-    currentPrecipElement.textContent = `${currentPreciptiation}mm`;
-    currentHumidityElement.textContent = `${currentHumidity}%`;
-    currentWindElement.textContent = `${currentWindSpeed}/kph`;
+    currentWeatherIconEl.src = condition.icon;
+    currentTempEl.textContent = `${temp_c}\u00B0`;
+    currentHumidityEl.textContent = `${humidity}%`;
+    currentWindEl.textContent = `${Math.round(gust_kph)}/kph`;
+    currentPrecipEl.textContent = `${precip_mm}mm`;
   } catch (error) {
     console.log("Error:", error);
   }
 }
 
-async function getCurrentMinMaxTemp(location) {
-  try {
-    const url = `${baseUrl}/forecast.json?key=${weatherApiKey}&q=${location}`;
-    const data = await fetchData(url);
-    const options = { day: "numeric", month: "long" };
-    const foreCastDay = data.forecast.forecastday;
-    const currentDate = foreCastDay[0].date;
-    const currentDay = new Date(currentDate);
-    const currentDayFormatted = currentDay.toLocaleDateString("en-US", options);
-
-    currentDayElement.textContent = `${currentDayFormatted}`;
-
-    const currentMinTemp = Math.round(foreCastDay[0].day.mintemp_c);
-    const currentMaxTemp = Math.round(foreCastDay[0].day.maxtemp_c);
-
-    currentMinTempElement.textContent = `Min: ${currentMinTemp}\u00B0`;
-    currentMaxTempElement.textContent = `Max: ${currentMaxTemp}\u00B0`;
-  } catch (error) {
-    console.log("Error:", error);
-  }
-}
-
-async function getDailyForecast(location) {
-  try {
-    const url = `${baseUrl}/forecast.json?key=${weatherApiKey}&q=${location}`;
-    const data = await fetchData(url);
-
-    const dailyForecast = data.forecast.forecastday;
-    const forecastHour = dailyForecast[0].hour;
-
-    console.log(forecastHour);
-
-    forecastHour.forEach(function (hour) {
-      const hourlyForecastElement = document.createElement("div");
-      hourlyForecastElement.classList.add("hourly-forecast");
-
-      const hourlyTemp = Math.round(hour.temp_c);
-      const hourlyTempForecastElement = document.createElement("p");
-      hourlyTempForecastElement.classList.add("hourly-forecast-temp");
-      hourlyTempForecastElement.textContent = `${hourlyTemp}\u00B0C`;
-
-      const hourlyWeatherIcon = hour.condition.icon;
-      const hourlyWeatherIconElement = document.createElement("img");
-      hourlyWeatherIconElement.src = `${hourlyWeatherIcon}`;
-      hourlyWeatherIconElement.classList.add("hourly-forecast-icon");
-
-      const hourlyTime = hour.time;
-      const hourlyTimeFormatted = hourlyTime.slice(11, 16);
-      const hourlyTimeElement = document.createElement("p");
-      hourlyTimeElement.textContent = `${hourlyTimeFormatted}`;
-      hourlyTimeElement.classList.add("hourly-forecast-hour");
-
-      hourlyForecastContainerElement.appendChild(hourlyForecastElement);
-      hourlyForecastElement.appendChild(hourlyTempForecastElement);
-      hourlyForecastElement.appendChild(hourlyWeatherIconElement);
-      hourlyForecastElement.appendChild(hourlyTimeElement);
-    });
-  } catch (error) {}
-}
-
-async function getWeeklyForecast(location) {
+async function getForecast(location) {
   try {
     const url = `${baseUrl}/forecast.json?key=${weatherApiKey}&q=${location}&days=7`;
     const data = await fetchData(url);
+    const forecast = data.forecast;
+    const dailyForecast = forecast.forecastday[0];
     const weeklyForecast = data.forecast.forecastday;
-    forecastElement.innterHTML = "";
 
-    weeklyForecast.forEach((forecast) => {
-      const dayMinTemp = Math.round(forecast.day.mintemp_c);
-      const dayMaxTemp = Math.round(forecast.day.maxtemp_c);
-
-      const forecastItem = document.createElement("div");
-      forecastItem.classList.add("forecast-item");
-
-      const forecastDateElement = document.createElement("div");
-      const forecastDate = new Date(forecast.date);
-      const dayOfWeek = forecastDate.toLocaleString("en-GB", {
-        weekday: "long",
-      });
-
-      forecastDateElement.textContent = dayOfWeek;
-      forecastDateElement.classList.add("forecast-date");
-
-      const forecastIconContainerElement = document.createElement("div");
-      forecastIconContainerElement.classList.add("forecast-icon-container");
-
-      const forecastIconElement = document.createElement("img");
-      const forecastIcon = forecast.day.condition.icon;
-      forecastIconElement.src = `${forecastIcon}`;
-      forecastIconElement.classList.add("forecast-icon");
-
-      const forecastTempElement = document.createElement("div");
-      forecastTempElement.textContent = `${dayMaxTemp}\u00B0 ${dayMinTemp}\u00B0`;
-      forecastTempElement.classList.add("forecast-temp");
-
-      forecastElement.appendChild(forecastItem);
-      forecastItem.appendChild(forecastDateElement);
-      forecastItem.appendChild(forecastIconContainerElement);
-      forecastIconContainerElement.appendChild(forecastIconElement);
-      forecastItem.appendChild(forecastTempElement);
-    });
+    setCurrentDay(dailyForecast);
+    setWeeklyForecast(weeklyForecast);
+    setHourlyForecast(dailyForecast);
   } catch (error) {
     console.log("Error:", error);
   }
 }
-getDailyForecast("Leicester");
-getWeeklyForecast("Leicester");
-getCurrentTemp("Leicester");
-getCurrentMinMaxTemp("Leicester");
+
+function setCurrentDay(dailyForecast) {
+  const { date, day } = dailyForecast;
+  const currentDay = new Date(date);
+  const options = { day: "numeric", month: "long" };
+  const formattedDate = currentDay.toLocaleDateString("en-US", options);
+
+  currentDayEl.textContent = formattedDate;
+  currentMinTempEl.textContent = `Min: ${Math.round(day.mintemp_c)}\u00B0`;
+  currentMaxTempEl.textContent = `Max: ${Math.round(day.maxtemp_c)}\u00B0`;
+}
+
+function setWeeklyForecast(weeklyForecast) {
+  weeklyForecast.forEach((forecast) => {
+    const { date, day } = forecast;
+    const forecastDate = new Date(date);
+    const dayOfWeek = forecastDate.toLocaleString("en-GB", { weekday: "long" });
+
+    const forecastItem = createForecastItem(dayOfWeek);
+    const forecastIcon = createForecastIcon(day.condition.icon);
+    const forecastTempContainer = createForecastTempContainer();
+    const forecastTempMin = createForecastTemp(day.mintemp_c);
+    const forecastTempMax = createForecastTemp(day.maxtemp_c);
+
+    forecastItem.appendChild(forecastIcon);
+    forecastItem.appendChild(forecastTempContainer);
+    forecastTempContainer.appendChild(forecastTempMin);
+    forecastTempContainer.appendChild(forecastTempMax);
+    forecastEl.appendChild(forecastItem);
+  });
+}
+
+function createForecastItem(dayOfWeek) {
+  const forecastItem = document.createElement("div");
+  forecastItem.classList.add("forecast-item");
+
+  const forecastDateEl = document.createElement("div");
+  forecastDateEl.textContent = dayOfWeek;
+  forecastDateEl.classList.add("forecast-date");
+
+  forecastItem.appendChild(forecastDateEl);
+  return forecastItem;
+}
+
+function createForecastIcon(iconUrl) {
+  const forecastIconEl = document.createElement("img");
+  forecastIconEl.src = iconUrl;
+  forecastIconEl.classList.add("forecast-icon");
+  return forecastIconEl;
+}
+
+function createForecastTempContainer() {
+  const forecastTempContainerEL = document.createElement("div");
+  forecastTempContainerEL.classList.add("forecast-temp-container");
+  return forecastTempContainerEL;
+}
+
+function createForecastTemp(maxTemp, minTemp) {
+  const forecastTempMinEl = document.createElement("div");
+  const forecastTempMaxEl = document.createElement("div");
+
+  forecastTempMinEl.textContent = `${Math.round(maxTemp)}\u00B0`;
+  forecastTempMaxEl.textContent = `${Math.round(maxTemp)}\u00B0`;
+
+  return forecastTempMinEl, forecastTempMaxEl;
+}
+
+function setHourlyForecast(dailyForecast) {
+  const forecastHour = dailyForecast.hour;
+  hourlyForecastContainerEl.innerHTML = "";
+
+  forecastHour.forEach((hour) => {
+    const hourlyTemp = Math.round(hour.temp_c);
+    const hourlyWeatherIcon = hour.condition.icon;
+    const hourlyTime = hour.time;
+    const hourlyTimeFormatted = hourlyTime.slice(11, 16);
+
+    const hourlyForecastEl = createHourlyForecast(
+      hourlyTemp,
+      hourlyWeatherIcon,
+      hourlyTimeFormatted
+    );
+    hourlyForecastContainerEl.appendChild(hourlyForecastEl);
+  });
+}
+
+function createHourlyForecast(temp, weatherIcon, time) {
+  const hourlyForecastEl = document.createElement("div");
+  hourlyForecastEl.classList.add("hourly-forecast");
+
+  const hourlyTempForecastEl = document.createElement("p");
+  hourlyTempForecastEl.textContent = `${temp}\u00B0C`;
+  hourlyTempForecastEl.classList.add("hourly-forecast-temp");
+
+  const hourlyWeatherIconEl = document.createElement("img");
+  hourlyWeatherIconEl.src = weatherIcon;
+  hourlyWeatherIconEl.classList.add("hourly-forecast-icon");
+
+  const hourlyTimeEl = document.createElement("p");
+  hourlyTimeEl.textContent = time;
+  hourlyTimeEl.classList.add("hourly-forecast-hour");
+
+  hourlyForecastEl.appendChild(hourlyTempForecastEl);
+  hourlyForecastEl.appendChild(hourlyWeatherIconEl);
+  hourlyForecastEl.appendChild(hourlyTimeEl);
+
+  return hourlyForecastEl;
+}
+
+getForecast("Leicester");
+getCurrentWeather("Leicester");

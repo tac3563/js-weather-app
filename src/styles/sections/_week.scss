@@ -41,14 +41,14 @@
       }
     }
 
-    .forecast-temp {
-      width: 33.33%;
-      text-align: end;
-    }
+    .forecast-temp-container {
+      display: flex;
+      gap: 5px;
+      @include fontPxToRem(18);
 
-    .forecast-date,
-    .forecast-temp {
-      font-size: 18px;
+      > div:last-child {
+        opacity: 0.5;
+      }
     }
   }
 }
