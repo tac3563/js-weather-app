@@ -48,6 +48,9 @@ async function getCurrentWeather(location) {
     currentWindEl.textContent = `${Math.round(gust_kph)}/kph`;
     currentPrecipEl.textContent = `${precip_mm}mm`;
   } catch (error) {
+    displayErrorMessage(
+      "Failed to fetch current weather data. Please try again later."
+    );
     console.log("Error:", error);
   }
 }
@@ -64,39 +67,59 @@ async function getForecast(location) {
     setWeeklyForecast(weeklyForecast);
     setHourlyForecast(dailyForecast);
   } catch (error) {
+    displayErrorMessage(
+      "Failed to fetch forecast data. Please try again later."
+    );
+
     console.log("Error:", error);
   }
 }
 
 function setCurrentDay(dailyForecast) {
-  const { date, day } = dailyForecast;
-  const currentDay = new Date(date);
-  const options = { day: "numeric", month: "long" };
-  const formattedDate = currentDay.toLocaleDateString("en-US", options);
+  try {
+    const { date, day } = dailyForecast;
+    const currentDay = new Date(date);
+    const options = { day: "numeric", month: "long" };
+    const formattedDate = currentDay.toLocaleDateString("en-US", options);
 
-  currentDayEl.textContent = formattedDate;
-  currentMinTempEl.textContent = `Min: ${Math.round(day.mintemp_c)}\u00B0`;
-  currentMaxTempEl.textContent = `Max: ${Math.round(day.maxtemp_c)}\u00B0`;
+    currentDayEl.textContent = formattedDate;
+    currentMinTempEl.textContent = `Min: ${Math.round(day.mintemp_c)}\u00B0`;
+    currentMaxTempEl.textContent = `Max: ${Math.round(day.maxtemp_c)}\u00B0`;
+  } catch (error) {
+    displayErrorMessage(
+      "Failed to set daily forecast data. Please try again later."
+    );
+    console.error("Error:", error);
+  }
 }
 
 function setWeeklyForecast(weeklyForecast) {
-  weeklyForecast.forEach((forecast) => {
-    const { date, day } = forecast;
-    const forecastDate = new Date(date);
-    const dayOfWeek = forecastDate.toLocaleString("en-GB", { weekday: "long" });
+  try {
+    weeklyForecast.forEach((forecast) => {
+      const { date, day } = forecast;
+      const forecastDate = new Date(date);
+      const dayOfWeek = forecastDate.toLocaleString("en-GB", {
+        weekday: "long",
+      });
 
-    const forecastItem = createForecastItem(dayOfWeek);
-    const forecastIcon = createForecastIcon(day.condition.icon);
-    const forecastTempContainer = createForecastTempContainer();
-    const forecastTempMin = createForecastTemp(day.mintemp_c);
-    const forecastTempMax = createForecastTemp(day.maxtemp_c);
+      const forecastItem = createForecastItem(dayOfWeek);
+      const forecastIcon = createForecastIcon(day.condition.icon);
+      const forecastTempContainer = createForecastTempContainer();
+      const forecastTempMin = createForecastTemp(day.mintemp_c);
+      const forecastTempMax = createForecastTemp(day.maxtemp_c);
 
-    forecastItem.appendChild(forecastIcon);
-    forecastItem.appendChild(forecastTempContainer);
-    forecastTempContainer.appendChild(forecastTempMin);
-    forecastTempContainer.appendChild(forecastTempMax);
-    forecastEl.appendChild(forecastItem);
-  });
+      forecastItem.appendChild(forecastIcon);
+      forecastItem.appendChild(forecastTempContainer);
+      forecastTempContainer.appendChild(forecastTempMin);
+      forecastTempContainer.appendChild(forecastTempMax);
+      forecastEl.appendChild(forecastItem);
+    });
+  } catch (error) {
+    displayErrorMessage(
+      "Failed to set weekly forecast data. Please try again later."
+    );
+    console.error("Error:", error);
+  }
 }
 
 function createForecastItem(dayOfWeek) {
@@ -135,22 +158,29 @@ function createForecastTemp(maxTemp, minTemp) {
 }
 
 function setHourlyForecast(dailyForecast) {
-  const forecastHour = dailyForecast.hour;
-  hourlyForecastContainerEl.innerHTML = "";
+  try {
+    const forecastHour = dailyForecast.hour;
+    hourlyForecastContainerEl.innerHTML = "";
 
-  forecastHour.forEach((hour) => {
-    const hourlyTemp = Math.round(hour.temp_c);
-    const hourlyWeatherIcon = hour.condition.icon;
-    const hourlyTime = hour.time;
-    const hourlyTimeFormatted = hourlyTime.slice(11, 16);
+    forecastHour.forEach((hour) => {
+      const hourlyTemp = Math.round(hour.temp_c);
+      const hourlyWeatherIcon = hour.condition.icon;
+      const hourlyTime = hour.time;
+      const hourlyTimeFormatted = hourlyTime.slice(11, 16);
 
-    const hourlyForecastEl = createHourlyForecast(
-      hourlyTemp,
-      hourlyWeatherIcon,
-      hourlyTimeFormatted
+      const hourlyForecastEl = createHourlyForecast(
+        hourlyTemp,
+        hourlyWeatherIcon,
+        hourlyTimeFormatted
+      );
+      hourlyForecastContainerEl.appendChild(hourlyForecastEl);
+    });
+  } catch (error) {
+    displayErrorMessage(
+      "Failed to set hourly forecast data. Please try again later."
     );
-    hourlyForecastContainerEl.appendChild(hourlyForecastEl);
-  });
+    console.error("Error:", error);
+  }
 }
 
 function createHourlyForecast(temp, weatherIcon, time) {
