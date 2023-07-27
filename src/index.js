@@ -1,6 +1,6 @@
 import "./styles/main.scss";
 
-const baseUrl = "http://api.weatherapi.com/v1";
+const baseUrl = "https://api.weatherapi.com/v1";
 const weatherApiKey = "ecc04dd12dfc427a81f192018230307";
 const currentWeatherIconEl = document.getElementById("header-img");
 const currentTempEl = document.getElementById("current-temp");
