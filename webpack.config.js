@@ -1,7 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CopyPlugin = require('copy-webpack-plugin'); // Import the CopyPlugin
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: './src/index.js',
@@ -21,24 +21,24 @@ module.exports = {
       },
       {
         test: /\.(png|jpg|jpeg|gif|svg)$/,
-        type: 'asset/resource', // Use asset/resource instead of file-loader
+        type: 'asset/resource',
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
-        type: 'asset/resource', // Use asset/resource instead of file-loader
+        type: 'asset/resource', 
       },
     ],
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './src/index.html',
+      template: 'index.html',
     }),
     new MiniCssExtractPlugin(),
     new CopyPlugin({
       patterns: [
         {
-          from: path.resolve(__dirname, 'src/images'), // Source directory
-          to: path.resolve(__dirname, 'dist/images'), // Destination directory
+          from: path.resolve(__dirname, 'src/images'), 
+          to: path.resolve(__dirname, 'dist/images'), 
         },
       ],
     }),
