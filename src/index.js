@@ -15,18 +15,6 @@ const hourlyForecastContainerEl = document.querySelector(
 );
 const currentDayEl = document.querySelector(".today-date");
 
-/*
-Code Refactoring:
-  1. Rename getCurrentTemp to getCurrentWeather as it better describes the purpose of the function rather than just getting the temperature
-  2. Use object destructuring to take relevant properties from the fetched data and assign them to a single object rather than multiple variables 
-  3. Change all Math.round() and other methods which manipulate the data to only apply when editing the DOM in order to preserve the original data from the API for future use.
-  4. Break the functions down into smaller getters/setters so that each function is only repsonsible for one action. 
-    a. Two getters for the current and forecast data 
-    b. Three setters for storing and manipulating the fetched data
-    c. A function for each newly created element in the DOM.
-  5. Add the setter functions as callbacks to be executed when the gettters have been run.
-*/
-
 async function fetchData(url) {
   const response = await fetch(url);
   if (!response.ok) {
